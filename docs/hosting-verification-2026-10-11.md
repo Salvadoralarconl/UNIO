@@ -6,6 +6,7 @@ Base: `3b4de0e658c28a2374971d7f4ee418165e88b711` on `Salvadoralarconl/UNIO` main
 
 - .NET API and production frontend builds; both deployment images built. Frontend retains the existing bundle-size warning.
 - 129 selected integration tests passed, zero failed: hosted bootstrap origins and key persistence; local login, provisioning, Operator bootstrap/recovery and session retention; company session/account/invitation permissions; company knowledge and conversation isolation. PostgreSQL vector was installed once in the disposable test database's public schema before parallel fixtures ran.
+- After examining the baseline failures, all 13 existing `AssetConfigurationTests` passed against the hosting commit. They cover normal company creation seeding and transaction rollback, configuration/foreign-ID permissions, and migration backfilling assets/kits without rewriting request snapshots. This adds relevant evidence but does not replace the two inventory-isolation tests that stop early.
 - New database bootstrapped all 17 migrations. A second fresh bootstrap was refused. Idempotent migration application passed.
 - All three production Compose services became healthy. Only the web loopback port was published; API/database had no host port bindings. Production Local identity reported public registration disabled.
 - Real browser against the built production UI: HTTPS Operator setup, password login, authenticated session, Secure/HttpOnly cookie, rejection of logout without CSRF, valid-CSRF logout and anonymous session rejection. The authenticated session survived API recreation with persistent Data Protection keys. The local HTTPS test used a disposable certificate; production browser-facing TLS remains Cloudflare's responsibility.
@@ -21,10 +22,12 @@ A separate checkout of the exact base ran 17 migration/inventory checks: 12 pass
 | Test | Observed baseline issue |
 | --- | --- |
 | `DatabaseStartupTests.FreshBootstrapCreatesCurrentSchemaAndCannotBeRepeated` | Expected 8 migrations; schema now has 17. |
-| `CompanyInventoryIsolationTests.OtherCompanyIdsAreInvisible` | Asset-type validation exception. |
-| `AssetConfigurationValueTests.CustomTypeAndValuesAreReturned` | Expected 0 values, received 1. |
-| `CompanyMigrationTests.LegacyDataKeepsIdsAndRelations` | Expected serialized legacy record omits newer fields. |
-| `CompanyMigrationTests.CompanyUniquenessAndChildReferencesAreScoped` | Inventory category foreign-key violation. |
+| `CompanyInventoryIsolationTests.OtherCompanyIdsAreInvisible` | Test inserts a second company directly without its asset types; asset creation fails before the cross-company assertions. Production company creation calls `AssetConfigurationRepository.SeedDefaultsAsync`. This failure is not evidence of a data leak, but this test does not prove inventory isolation. |
+| `AssetConfigurationValueTests.CustomTypeAndValuesAreReturned` | The custom asset/type/value response assertions pass, then the test expects zero inventory-documentation records and receives one. The current asset creation path automatically provisions documentation. Its later protected-property assertion is not reached. |
+| `CompanyMigrationTests.LegacyDataKeepsIdsAndRelations` | Snapshot excludes older added columns but not `asset_type_id` and `custom_fields` added by migration 010. The observed original fields match, with those two fields added. Later assertions are not reached; this is not full legacy-data migration acceptance. |
+| `CompanyMigrationTests.CompanyUniquenessAndChildReferencesAreScoped` | Test creates a company using raw SQL after migrations, omits asset-type seeding, then inserts an asset whose default category lacks its company-scoped reference. PostgreSQL rejects it with 23503 before intended child-reference assertions. This demonstrates enforcement of that reference, not proof that every later assertion would pass. |
+
+These findings do not block building and bootstrapping the tested empty trial database. They do block claiming a green full suite or complete legacy migration/inventory-isolation acceptance. Do not migrate existing company data on the strength of these hosting checks. Raw SQL/imports that bypass company provisioning can create incomplete companies; use the normal Operator company-creation flow. Before external users exercise inventory, verify separate-company asset list/get/update/activity and documentation access using normally provisioned companies. No unrelated feature or test fixes were included.
 
 ## Still required on Ubuntu
 

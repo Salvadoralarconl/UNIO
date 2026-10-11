@@ -4,6 +4,8 @@ This is a hosting change to the existing app. The AI behavior, login page and co
 
 The existing **host-based Cloudflare Tunnel** reaches Nginx on `127.0.0.1:5180`. Nginx serves the production frontend and proxies `/api` over verified private HTTPS to the API. API and database ports are not published. No forwarded-header trust is enabled. The existing network-peer login throttle remains shared behind the proxy (30 anonymous POST requests/minute).
 
+The exact route is browser HTTPS -> Cloudflare -> the existing encrypted tunnel -> host cloudflared -> loopback HTTP Nginx -> certificate-verified HTTPS API. Nginx fixes the API Host to `unio.getunio.dev` and clears `X-Forwarded-For`, `X-Forwarded-Proto` and `X-Forwarded-Host`. The API sees actual TLS, so secure cookies do not depend on trusting forwarded headers. Nginx uses Cloudflare's incoming scheme header only for an HTTP-to-HTTPS redirect. API and web share private/outbound Docker networks; PostgreSQL is attached only to the internal private network. The API's outbound network reaches the configured private Ollama endpoint. Keep that endpoint on the trusted private/Tailscale route; no model endpoint is exposed through Nginx or the tunnel. This setup trusts the Ubuntu host and its Docker administrators.
+
 ## First install: run these yourself in the Ubuntu SSH shell
 
 Start in your existing UNIO clone. Do not use the development `compose.yaml` for this deployment. These commands use an independent `unio` Compose project and do not change Folio or Ollama services.
