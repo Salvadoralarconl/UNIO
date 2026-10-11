@@ -1,0 +1,9 @@
+import {useEffect,useRef,useState} from 'react';
+import LoginShell from './LoginShell';
+import {changeOwnPassword} from './authenticationApi';
+export default function OwnPassword({onChanged,onCancel}:{onChanged:()=>void;onCancel:()=>void}){
+ const [input,setInput]=useState({currentPassword:'',password:'',confirmPassword:''}),[error,setError]=useState(''),[busy,setBusy]=useState(false);const submitting=useRef(false),request=useRef<AbortController|null>(null);
+ useEffect(()=>()=>request.current?.abort(),[]);
+ async function submit(){if(submitting.current)return;if(input.password!==input.confirmPassword){setError('Passwords must match.');return;}submitting.current=true;setBusy(true);setError('');const c=new AbortController();request.current=c;try{await changeOwnPassword(input,c.signal);if(!c.signal.aborted){setInput({currentPassword:'',password:'',confirmPassword:''});onChanged();}}catch(e){if(!c.signal.aborted&&(e as Error).name!=='AbortError')setError((e as Error).message);}finally{if(!c.signal.aborted){submitting.current=false;setBusy(false);}}}
+ return <LoginShell form={false} title="Change your password" error={error}><form className="login-fields" onSubmit={e=>{e.preventDefault();void submit();}}>{(['currentPassword','password','confirmPassword'] as const).map((key,index)=><label key={key}>{['Current password','New password','Confirm new password'][index]}<input type="password" required disabled={busy} minLength={index?15:1} maxLength={128} autoComplete={index?'new-password':'current-password'} value={input[key]} onChange={e=>setInput({...input,[key]:e.target.value})}/></label>)}<p className="login-help">Use 15–128 characters. You will sign in again after saving.</p><button className="login-primary" disabled={busy}>{busy?'Saving…':'Save password'}</button></form><button className="login-retry" onClick={onCancel}>Cancel</button></LoginShell>;
+}

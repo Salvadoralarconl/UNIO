@@ -1,0 +1,26 @@
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+.env
+.env.local
+docs/epson/originals/
+.superpowers/
+*.user
+artifacts/
+**/uploads/
+**/test-results/
+**/playwright-report/
+**/*.tsbuildinfo
+
+# Local generated outputs and runtime logs
+*.log
+backend/*-build/
+*.pfx
+*.pem
+*.key
+.env.*
+!.env.example
+
+**/TestResults/
+*.trx

@@ -1,0 +1,47 @@
+name: clary-lab
+services:
+  database:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_DB: clary
+      POSTGRES_USER: clary
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - clary-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clary -d clary"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+  api:
+    build:
+      context: .
+      dockerfile: backend/Clary.Api/Dockerfile
+    environment:
+      ASPNETCORE_HTTP_PORTS: 8080
+      AI_PROVIDER: ${AI_PROVIDER:-OpenAI}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GENERATION_MODEL: ${GENERATION_MODEL:-gpt-4.1-mini}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-text-embedding-3-small}
+      EMBEDDING_DIMENSIONS: ${EMBEDDING_DIMENSIONS:-1536}
+      MIN_SIMILARITY: ${MIN_SIMILARITY:-0.45}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-}
+      OLLAMA_GENERATION_MODEL: ${OLLAMA_GENERATION_MODEL:-qwen3:8b}
+      OLLAMA_EMBEDDING_MODEL: ${OLLAMA_EMBEDDING_MODEL:-embeddinggemma}
+      OLLAMA_EMBEDDING_DIMENSIONS: ${OLLAMA_EMBEDDING_DIMENSIONS:-768}
+      RETRIEVAL_MAX_DOCUMENTS: ${RETRIEVAL_MAX_DOCUMENTS:-3}
+      RETRIEVAL_PASSAGES_PER_DOCUMENT: ${RETRIEVAL_PASSAGES_PER_DOCUMENT:-2}
+      RETRIEVAL_SCORE_WINDOW: ${RETRIEVAL_SCORE_WINDOW:-0.20}
+      ConnectionStrings__Knowledge: "Host=database;Database=clary;Username=clary;Password=${POSTGRES_PASSWORD}"
+    ports:
+      - "127.0.0.1:5081:8080"
+    volumes:
+      - clary-uploads:/app/uploads
+    depends_on:
+      database:
+        condition: service_healthy
+volumes:
+  clary-data:
+  clary-uploads:

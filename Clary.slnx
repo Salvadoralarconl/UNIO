@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="backend/Clary.Api/Clary.Api.csproj" />
+    <Project Path="backend/Clary.Tests/Clary.Tests.csproj" />
+  </Folder>
+</Solution>

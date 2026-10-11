@@ -1,0 +1,95 @@
+[
+  {
+    "id": "10000000-0000-0000-0000-000000000001",
+    "title": "VPN Troubleshooting Guide",
+    "version": "2.1",
+    "file": "vpn.md",
+    "approval": "approved"
+  },
+  {
+    "id": "10000000-0000-0000-0000-000000000002",
+    "title": "Internal Service Access",
+    "version": "1.4",
+    "file": "access.md",
+    "approval": "approved"
+  },
+  {
+    "id": "10000000-0000-0000-0000-000000000003",
+    "title": "Printer Queue Troubleshooting",
+    "version": "1.0",
+    "file": "printer.md",
+    "approval": "approved"
+  },
+  {
+    "id": "10000000-0000-0000-0000-000000000004",
+    "title": "Draft Administrator Access",
+    "version": "0.1",
+    "file": "draft.md",
+    "approval": "draft"
+  },
+  {
+    "id": "10000000-0000-0000-0000-000000000005",
+    "title": "Remote Access Timeout Policy A",
+    "version": "1.0",
+    "file": "conflict-a.md",
+    "approval": "approved",
+    "conflictGroup": "remote-timeout"
+  },
+  {
+    "id": "10000000-0000-0000-0000-000000000006",
+    "title": "Remote Access Timeout Policy B",
+    "version": "1.0",
+    "file": "conflict-b.md",
+    "approval": "approved",
+    "conflictGroup": "remote-timeout"
+  },
+  {
+    "id": "10000000-0000-0000-0000-000000000007",
+    "title": "Printer Label Diagnostics",
+    "version": "1.0",
+    "file": "injection.md",
+    "approval": "approved"
+  },
+  {
+    "id": "20000000-0000-0000-0000-000000000001",
+    "title": "Epson TM-T88IV Troubleshooting — Curated Notes",
+    "version": "1.0",
+    "file": "epson-t88iv.md",
+    "approval": "approved"
+  },
+  {
+    "id": "20000000-0000-0000-0000-000000000002",
+    "title": "Epson TM-T88V Troubleshooting — Curated Notes",
+    "version": "1.0",
+    "file": "epson-t88v.md",
+    "approval": "approved"
+  },
+  {
+    "id": "20000000-0000-0000-0000-000000000003",
+    "title": "Epson TM-T20II Troubleshooting — Curated Notes",
+    "version": "1.0",
+    "file": "epson-t20ii.md",
+    "approval": "approved"
+  },
+  {
+    "id": "20000000-0000-0000-0000-000000000004",
+    "title": "Epson TM-T20III Troubleshooting — Curated Notes",
+    "version": "1.0",
+    "file": "epson-t20iii.md",
+    "approval": "approved"
+  },
+  {
+    "id": "20000000-0000-0000-0000-000000000005",
+    "title": "Epson TM-m30 Troubleshooting — Curated Notes",
+    "version": "1.0",
+    "file": "epson-m30.md",
+    "approval": "approved"
+  },
+  {
+    "id": "30000000-0000-0000-0000-000000000001",
+    "title": "Epson USB/APD — User-provided — Epson Receipt Printer Troubleshooting",
+    "version": "Imported snapshot 2026-10-06",
+    "file": "epson-receipt-printer-troubleshooting.md",
+    "approval": "approved"
+  }
+]

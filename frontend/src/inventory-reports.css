@@ -1,0 +1,27 @@
+.inventory-reports-page{min-height:0;display:flex;flex-direction:column;gap:10px;overflow:hidden;background:white}.report-controls{flex-shrink:0;overflow:visible;padding:14px 16px}.report-filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.report-columns{border:0;padding:0;margin:14px 0 10px;display:flex;flex-wrap:wrap;gap:14px;font-size:12px}.report-columns legend{margin-bottom:8px;color:#888890}.report-columns label{display:flex;align-items:center;gap:6px}.report-columns input{accent-color:#292b27;width:16px;height:16px}.report-controls footer{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;color:#888890}.report-results{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}.report-results>header{display:flex;align-items:center;gap:12px;padding:10px 16px;flex-shrink:0}.report-results h2{font-size:14px;margin:0;flex:1}.report-results header>span{font-size:12px;color:#888890}.report-results>p,.report-results>[role=alert]{padding:16px}.report-table{flex:1;min-height:0;overflow-x:auto;display:flex;flex-direction:column}.report-table table{display:flex;flex-direction:column;flex:1;min-height:0;border-collapse:collapse}.report-table thead{flex-shrink:0;background:#f7f6f2}.report-table tbody{flex:1;min-height:0;overflow-y:auto}.report-table tr{display:grid}.report-table th,.report-table td{padding:12px 16px;text-align:left;display:flex;align-items:center;min-width:0;overflow-wrap:anywhere;border-bottom:1px solid #eeede7;font-size:12px}.report-table th{font-size:11px;font-weight:500;color:#888890}.report-table tbody tr:hover{background:#f9f8f5}.report-table button{text-align:left}.inventory-reports-page .equipment-secondary{display:inline-flex;align-items:center;gap:6px}@media(max-width:900px){.report-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.inventory-reports-page{overflow:auto}.report-filter-grid{grid-template-columns:1fr}.report-results{min-height:320px;max-height:65dvh}.report-controls footer{align-items:flex-start;flex-direction:column}}
+.report-columns input{appearance:none;flex-shrink:0;border:1px solid #d8d5cc;border-radius:4px;background:white;display:grid;place-content:center}.report-columns input:checked{background:#292b27;border-color:#292b27}.report-columns input:checked:after{content:"";width:7px;height:4px;border-left:2px solid white;border-bottom:2px solid white;transform:rotate(-45deg);margin-top:-2px}.report-columns input:disabled{opacity:.65}
+/* Match the shared Inventory controls and compact panel layout. */
+.inventory-reports-page .equipment-heading{margin:0 0 0;flex-shrink:0}
+.inventory-reports-page .report-controls{padding:12px 16px;border-radius:10px;box-sizing:border-box}
+.inventory-reports-page .report-filter-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 16px;align-items:start}
+.inventory-reports-page .asset-category-field{margin:0;min-width:0}
+.inventory-reports-page .asset-category-field>label{font-size:11px;font-weight:500;color:#888890;margin:0 0 6px;line-height:1.3}
+.inventory-reports-page .asset-category-control{height:36px;margin:0;border-radius:8px;box-sizing:border-box}
+.inventory-reports-page .asset-category-control>input{display:block;height:36px;width:100%;box-sizing:border-box;margin:0;border:1px solid #deddd7;border-radius:8px;background:white;padding:8px 34px 8px 11px;font:inherit;font-size:12px;color:#30302c;line-height:18px}
+.inventory-reports-page .asset-category-control>input::placeholder{color:#92928b}
+.inventory-reports-page .asset-category-toggle{right:5px;top:18px;width:26px;height:26px;min-height:0;margin:0;padding:0;border:0;border-radius:6px;background:transparent;display:grid;place-items:center}
+.inventory-reports-page .asset-category-options{top:calc(100% + 7px);max-height:210px;border-radius:8px;padding:5px;box-sizing:border-box}
+.inventory-reports-page .asset-category-options>button{min-height:32px;padding:7px 10px;font-size:12px;line-height:18px;border-radius:6px}
+.inventory-reports-page .report-columns{padding:0;margin:12px 0 0;gap:12px;border:0;min-width:0}
+.inventory-reports-page .report-columns legend{font-size:11px;line-height:1.3;margin:0 0 8px;padding:0;color:#888890}
+.inventory-reports-page .report-columns label{margin:0;font-size:12px;line-height:18px}
+.inventory-reports-page .report-columns input{margin:0}
+.inventory-reports-page .report-controls footer{margin:12px 0 0;padding:10px 0 0;border-top:1px solid #eeede7;min-height:0;line-height:1.5}
+.inventory-reports-page .equipment-secondary{min-height:34px;padding:7px 12px;font-size:12px;line-height:18px;border-radius:8px}
+.inventory-reports-page .report-results{border-radius:10px}
+.inventory-reports-page .report-results>header{height:48px;box-sizing:border-box;padding:7px 16px}
+.inventory-reports-page .report-table th,.inventory-reports-page .report-table td{padding:10px 16px}
+@media(min-width:1400px){.inventory-reports-page .report-filter-grid{grid-template-columns:repeat(7,minmax(0,1fr))}}
+@media(max-width:900px){.inventory-reports-page .report-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.inventory-reports-page .report-filter-grid{grid-template-columns:1fr}}
+.report-date{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:500;color:#888890}.report-date input{height:36px;box-sizing:border-box;border:1px solid #deddd7;border-radius:8px;padding:8px 11px;font:inherit;font-size:12px;color:#30302c;background:white}

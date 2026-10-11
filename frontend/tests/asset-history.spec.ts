@@ -1,0 +1,10 @@
+import {test,expect} from './session-fixture';
+test('asset information and recorded history appear side by side',async({page})=>{
+ await page.route('**/api/inventory/assets',r=>r.fulfill({json:[{id:'asset-history',computer:'History laptop',assetTag:'H-1',category:'Computer',status:'Assigned',revision:2,updatedAt:'2026-10-10T12:00:00Z',assignee:'Maya',location:'Office',customFields:{},softwareStatus:'Not checked'}]}));
+ await page.route('**/api/inventory/assets/asset-history/history**',r=>r.fulfill({json:{items:[{id:'event-1',actorDisplayName:'Taylor Smith',action:'Updated',occurredAt:'2026-10-10T12:00:00Z',before:{assignee:'Alex',location:'Warehouse',status:'In repair'},after:{assignee:'Maya',location:'Office',status:'Assigned'}}],nextCursor:null}}));
+ await page.goto('http://127.0.0.1:5174');await page.getByRole('tab',{name:'Inventory',exact:true}).click();await page.getByRole('button',{name:'Open asset History laptop',exact:true}).click();
+ const info=page.getByRole('region',{name:'Asset information'}),history=page.getByRole('region',{name:'Asset history'});await expect(info).toBeVisible();await expect(history).toContainText('Changed by Taylor Smith');await expect(history).toContainText('Alex → Maya');await expect(history).toContainText('Warehouse → Office');await expect(history).toContainText('In repair → Assigned');expect((await history.boundingBox())!.x).toBeGreaterThan((await info.boundingBox())!.x);expect((await history.boundingBox())!.width).toBeGreaterThan((await info.boundingBox())!.width);await history.getByRole('heading',{name:'History'}).click();await expect(page.getByRole('dialog',{name:'Asset details'})).toBeVisible();await page.mouse.click(5,5);await expect(page.getByRole('dialog',{name:'Asset details'})).not.toBeVisible();await page.getByRole('button',{name:'Open asset History laptop',exact:true}).click();await page.getByRole('button',{name:'Close asset details',exact:true}).click();await expect(page.getByRole('dialog',{name:'Asset details'})).not.toBeVisible();
+});
+
+
+

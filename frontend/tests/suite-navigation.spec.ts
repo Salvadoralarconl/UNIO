@@ -1,0 +1,38 @@
+import {test,expect} from './session-fixture';
+test('module tabs change the rail while preserving Clary draft and history access',async({page})=>{
+  await page.goto('http://127.0.0.1:5174');
+  await expect(page.getByRole('tab',{name:'Brie',exact:true})).toBeVisible();
+  await page.getByRole('textbox',{name:'Issue description'}).fill('My draft printer issue');
+  await page.getByRole('button',{name:'Previous chats',exact:true}).click();
+  await expect(page.getByRole('dialog',{name:'Previous chats'})).toBeVisible();
+  const panel=await page.locator('main.workspace').boundingBox();
+  const drawer=await page.getByRole('dialog',{name:'Previous chats'}).boundingBox();
+  expect(Math.abs(drawer!.y-panel!.y)).toBeLessThan(1);
+  expect(Math.abs(drawer!.height-panel!.height)).toBeLessThan(1);
+  await page.screenshot({path:'../artifacts/clary-history-contained.png',fullPage:true});
+  await expect(page.getByRole('button',{name:'Close history'})).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  expect(await page.evaluate(()=>!!document.activeElement?.closest('.history-drawer'))).toBeTruthy();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button',{name:'Previous chats',exact:true})).toBeFocused();
+  await page.getByRole('tab',{name:'Documentation',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Upload files',exact:true}).first()).toBeVisible();
+  await page.getByRole('button',{name:'Upload files',exact:true}).last().click();
+  await expect(page.getByRole('dialog',{name:'Upload files'}).getByLabel('Documentation file')).toBeVisible();
+  await page.getByRole('button',{name:'Close upload'}).click();
+  await expect(page.getByRole('button',{name:'Previous chats',exact:true})).toHaveCount(0);
+  await page.getByRole('tab',{name:'Inventory',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Inventory',exact:true})).toBeVisible();
+  await page.getByRole('tab',{name:'Brie',exact:true}).click();
+  await expect(page.getByRole('textbox',{name:'Issue description'})).toHaveValue('My draft printer issue');
+  await expect(page.getByRole('button',{name:'Send question'})).toHaveText('Send');
+  await page.getByRole('button',{name:'Toggle sources'}).click();
+  await expect(page.getByRole('complementary',{name:'Sources panel'})).toHaveCount(0);
+  await page.getByRole('button',{name:'Toggle sources'}).click();
+  await expect(page.getByRole('complementary',{name:'Sources panel'})).toBeVisible();
+  await page.screenshot({path:'../artifacts/clary-suite-desktop.png',fullPage:true});
+  await page.setViewportSize({width:390,height:844});
+  await expect(page.getByRole('tab',{name:'Inventory',exact:true})).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
+});
+

@@ -1,0 +1,3 @@
+ALTER TABLE asset_types ADD COLUMN categories jsonb NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(categories)='array');
+-- Preserve categories already used by assets and reusable kits within each company/type.
+UPDATE asset_types t SET categories=COALESCE((SELECT jsonb_agg(v.name ORDER BY v.name) FROM (SELECT DISTINCT btrim(a.custom_category) AS name FROM inventory_assets a WHERE a.company_id=t.company_id AND a.category=t.code AND NULLIF(btrim(a.custom_category),'') IS NOT NULL UNION SELECT DISTINCT btrim(line->>'customCategory') FROM equipment_kits k CROSS JOIN LATERAL jsonb_array_elements(k.lines) line WHERE k.company_id=t.company_id AND line->>'category'=t.code AND NULLIF(btrim(line->>'customCategory'),'') IS NOT NULL) v),'[]'::jsonb);

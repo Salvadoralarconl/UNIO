@@ -1,0 +1,3 @@
+import {useEffect,useRef,type ReactNode} from 'react';
+import {X} from 'lucide-react';
+export default function EquipmentModal({title,close,children,className=''}:{title:string;close:()=>void;children:ReactNode;className?:string}){const dialog=useRef<HTMLDialogElement>(null);useEffect(()=>{const element=dialog.current,previous=document.activeElement as HTMLElement|null;element?.showModal();return()=>{element?.close();if(previous?.isConnected)previous.focus();};},[]);return <dialog ref={dialog} className={'equipment-modal '+className} aria-label={title} onCancel={event=>{event.preventDefault();close();}}><header><h2>{title}</h2><button type="button" aria-label={'Close '+title.toLowerCase()} onClick={close}><X size={20}/></button></header>{children}</dialog>;}

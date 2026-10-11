@@ -1,0 +1,5 @@
+import AssetCategoryInput from '../AssetCategoryInput';
+import {ticketStatuses} from './ticketApi';
+export type Filters={status:string;priority:string;type:string;assignee:string;recipient:string;asset:string;location:string;overdue:boolean};
+export const emptyFilters:Filters={status:'',priority:'',type:'',assignee:'',recipient:'',asset:'',location:'',overdue:false};
+export default function TicketFilters({value,change}:{value:Filters;change:(value:Filters)=>void;settings:(()=>void)|null}){return <div className="ticket-filter-menu"><AssetCategoryInput label="Status" allowCustom={false} required disabled={false} value={value.status||'All statuses'} options={[{id:'all',label:'All statuses'},...ticketStatuses.map(s=>({id:s,label:s}))]} onChange={(_,id)=>change({...value,status:id==='all'?'':id??''})}/><AssetCategoryInput label="Priority" allowCustom={false} required disabled={false} value={value.priority||'All priorities'} options={[{id:'all',label:'All priorities'},...['Low','Normal','High','Urgent'].map(s=>({id:s,label:s}))]} onChange={(_,id)=>change({...value,priority:id==='all'?'':id??''})}/></div>;}

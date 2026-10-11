@@ -1,0 +1,10 @@
+import {useEffect,useRef,useState} from 'react';
+import {X} from 'lucide-react';
+import {api,type DocumentInfo} from './api';
+import RichTextEditor from './RichTextEditor';
+export default function DocumentEditor({documents,document,text,content,close,saved}:{documents:DocumentInfo[];document:DocumentInfo;text:string;content:string|null;close:()=>void;saved:(d:DocumentInfo)=>Promise<void>}){
+ const modal=useRef<HTMLDialogElement>(null);const [title,setTitle]=useState(document.title),[body,setBody]=useState(text),[rich,setRich]=useState(content??''),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ useEffect(()=>{const previous=window.document.activeElement as HTMLElement|null;modal.current?.showModal();return()=>{modal.current?.close();previous?.focus();};},[]);
+ async function save(){setBusy(true);setError('');try{const d=await api<DocumentInfo>(`/api/library/pages/${document.id}`,{title,text:body,content:rich,folderId:null});await saved(d);close();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
+ return <dialog ref={modal} className="library-modal wiki-page-editor" aria-label="Edit document" onCancel={e=>{e.preventDefault();if(!busy)close();}}><button className="close" aria-label="Close editor" disabled={busy} onClick={close}><X/></button><h2>Edit document</h2><label>Page title<input autoFocus maxLength={200} value={title} disabled={busy} onChange={e=>setTitle(e.target.value)}/></label><p className="editor-location">Save as a new draft version. Approve and index it when ready for Brie.</p><RichTextEditor documents={documents} initialText={text} initialContent={content} disabled={busy} onChange={(value,plain)=>{setRich(value);setBody(plain);}}/>{error&&<p role="alert" className="error">{error}</p>}<footer><button className="cancel-action" disabled={busy} onClick={close}>Cancel</button><button className="save-action" disabled={busy||!title.trim()||!body.trim()} onClick={()=>void save()}>{busy?'Saving…':'Save draft'}</button></footer></dialog>;
+}

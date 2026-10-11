@@ -1,0 +1,6 @@
+BEGIN;
+CREATE TEMP TABLE demo_requests AS SELECT c.id company_id,md5('unio-demo-request-'||n)::uuid id,md5('unio-demo-ticket-'||n)::uuid ticket_id,'Demo - Equipment onboarding '||lpad(n::text,2,'0') title,md5('unio-demo-person-'||n)::uuid employee_id,md5('unio-demo-department-'||(1+(n-1)%12))::uuid department_id,k.id kit_id,k.name kit_name,k.lines,current_date+(n%14) needed_date,CASE WHEN n%3=0 THEN 'Approved' ELSE 'Pending' END state FROM public.companies c CROSS JOIN generate_series(1,30) g(n) JOIN public.equipment_kits k ON k.company_id=c.id AND k.id=md5('unio-demo-kit-'||n)::uuid WHERE c.id='0972c761-87a0-43c4-93d1-be98ecec612a' AND c.name='UNIO-Test';
+INSERT INTO public.equipment_tickets(company_id,id,request_id,title,state) SELECT company_id,ticket_id,id,title,state FROM demo_requests ON CONFLICT DO NOTHING;
+INSERT INTO public.equipment_requests(company_id,id,title,employee_id,department_id,kit_id,kit_name,needed_date,notes,state,ticket_id,lines) SELECT company_id,id,title,employee_id,department_id,kit_id,kit_name,needed_date,'DEMO DATA - review the kit, confirm availability, and arrange equipment handover. Sample request for layout testing.',state,ticket_id,lines FROM demo_requests ON CONFLICT DO NOTHING;
+COMMIT;
+SELECT state,count(*) FROM public.equipment_requests WHERE company_id='0972c761-87a0-43c4-93d1-be98ecec612a' GROUP BY state;

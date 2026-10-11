@@ -1,0 +1,10 @@
+using Clary.Api;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Json;
+using Xunit;
+public class BriePauseControlTests {
+ sealed class Router:IBrieIntentRouter {public int Calls;public Task<BrieIntentDecision> InterpretAsync(BrieIntentContext c,CancellationToken ct){Calls++;return Task.FromResult(c.PendingOperation is null?new BrieIntentDecision("create_asset","add an asset"):new BrieIntentDecision("continue_task"));}}
+ sealed class Parser:IBrieTicketParser {public Task<BrieTicketPatch> ParseAsync(string s,CancellationToken ct)=>Task.FromResult(new BrieTicketPatch(Name:"Fixture dock"));}
+ [Theory][InlineData("Leave that for now. My laptop is connected to Wi-Fi but can't browse.",true)][InlineData("Pause this task. My camera preview is black.",true)][InlineData("Set that aside",true)][InlineData("Leave that for now and create a ticket",false)][InlineData("Don't leave that for now",false)][InlineData("The note says 'leave that for now'",false)][InlineData("\"Leave that for now\"",false)]
+ public async Task ExplicitPauseDoesNotDependOnModelAndCannotConsumeField(string text,bool paused){var router=new Router();await IdentityFixture.Run(async f=>{await f.Login();var initial=(await(await f.Send(HttpMethod.Post,"/api/brie/messages",new BrieMessage("Please add an asset",Guid.NewGuid()))).Content.ReadFromJsonAsync<Answer>())!;var task=initial.TicketTask!;var before=await f.Scalar("SELECT state::text FROM brie_ticket_tasks");var reply=(await(await f.Send(HttpMethod.Post,"/api/brie/messages",new BrieMessage(text,Guid.NewGuid(),TaskId:task.TaskId))).Content.ReadFromJsonAsync<Answer>())!;Assert.Equal(paused,reply.TicketTask?.Status=="paused");Assert.Equal(paused?1:2,router.Calls);Assert.Equal(before,await f.Scalar("SELECT state::text FROM brie_ticket_tasks"));Assert.Equal(0L,await f.Scalar("SELECT count(*) FROM inventory_assets"));},b=>{b.Services.AddSingleton<IBrieIntentRouter>(router);b.Services.AddSingleton<IBrieTicketParser>(new Parser());b.Services.AddSingleton<BrieTickets>();});}
+}

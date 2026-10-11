@@ -1,0 +1,33 @@
+.asset-configuration{overflow:auto}.asset-configuration .overview-panel{background:#fff;border:1px solid #e4e7eb;border-radius:12px;box-shadow:0 2px 8px #172b4d05;padding:18px}.asset-configuration header{display:flex;align-items:center;justify-content:space-between;gap:12px}.asset-configuration button{background:white;border:1px solid #dfe3e8;border-radius:7px;padding:8px 12px;color:#475569;cursor:pointer}.asset-configuration button:disabled{opacity:.55;cursor:default}.configuration-type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.configuration-type-grid button{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.configuration-type-grid small{width:100%;text-align:left}.asset-configuration form{margin-top:16px;display:grid;gap:12px}.asset-configuration label{display:grid;gap:5px;font-size:13px}.asset-configuration input:not([type=checkbox]),.asset-configuration textarea,.asset-configuration select,.custom-asset-fields select,.custom-asset-fields textarea{width:100%;box-sizing:border-box;padding:9px;border:1px solid #dfe3e8;border-radius:6px;background:white;color:#334155}.configuration-icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}.configuration-icon-grid button{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 3px}.configuration-icon-grid small{font-size:10px}.configuration-icon-grid [aria-pressed=true]{border-color:#4b78dc;background:#f2f6ff}.asset-configuration button:focus-visible{outline:2px solid #4b78dc;outline-offset:2px}.configuration-field-row{display:flex;width:100%;justify-content:space-between;gap:12px;margin:7px 0;text-align:left}.asset-configuration footer{display:flex;gap:8px;justify-content:flex-end}.custom-asset-fields{margin:18px 0;border:1px solid #e4e7eb;border-radius:8px;padding:12px}.custom-asset-fields legend{font-size:13px}.custom-asset-fields small{font-size:11px;color:#64748b}.inventory-categories{grid-template-columns:repeat(auto-fit,minmax(145px,1fr))!important}@media(max-width:600px){.asset-configuration header{flex-wrap:wrap}.configuration-field-row{flex-direction:column}.configuration-icon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.asset-configuration label:has(input[type=checkbox]){display:flex;align-items:center;gap:7px}.asset-configuration input[type=checkbox]{width:auto;margin:0}
+
+/* Keep configuration pickers consistent with the shared dropdown control. */
+.asset-configuration .asset-category-control{height:36px}
+.asset-configuration .asset-category-control input{height:36px;padding-right:36px}
+.asset-configuration .asset-category-toggle{border:0;border-radius:0;background:transparent;padding:0;width:32px;height:36px;display:flex;align-items:center;justify-content:center;box-shadow:none}
+.asset-configuration .asset-category-control input:focus{outline:none;box-shadow:none}
+.asset-configuration .asset-category-control:focus-within{outline:2px solid #d4d4d8;outline-offset:1px;border-radius:6px}
+.asset-configuration .asset-category-options{scrollbar-width:none}
+.asset-configuration .asset-category-options::-webkit-scrollbar{display:none}
+.asset-configuration .asset-category-options button{border:0;border-radius:0;box-shadow:none;text-align:left}
+.asset-configuration fieldset:has(.configuration-icon-grid){min-width:0;border:1px solid #dfe3e8;border-radius:10px;padding:10px}.asset-configuration fieldset:has(.configuration-icon-grid)>legend{padding:0 5px}
+
+.asset-configuration .configuration-type-actions{align-items:center;flex-wrap:wrap}
+.asset-configuration .configuration-type-actions .configuration-active-toggle{margin-right:auto;gap:8px}
+.asset-configuration .configuration-active-toggle input[type=checkbox]{appearance:none;-webkit-appearance:none;width:16px;height:16px;flex:none;border:1px solid #d5d7d2;border-radius:4px;background:#fff;cursor:pointer;position:relative}
+.asset-configuration .configuration-active-toggle input[type=checkbox]:checked{background:#292925;border-color:#292925}
+.asset-configuration .configuration-active-toggle input[type=checkbox]:checked::after{content:'';position:absolute;left:3px;top:3px;width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+.asset-configuration .configuration-active-toggle input[type=checkbox]:focus-visible{outline:2px solid #a6aaa0;outline-offset:2px}
+.asset-configuration .configuration-active-toggle input[type=checkbox]:disabled{opacity:.55;cursor:default}
+
+.configuration-directory-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;flex:none}
+.asset-configuration .configuration-directory-tabs>button{display:flex;align-items:center;gap:12px;justify-content:flex-start;min-height:66px;border:1px solid #e5e4df;border-radius:11px;padding:16px 20px;background:white;color:#52525b;font:inherit;cursor:pointer}
+.asset-configuration .configuration-directory-tabs>button[aria-selected=true]{background:#f1efe9;border-color:#cbc8be;color:#282a26}
+.asset-configuration [role=tabpanel][hidden]{display:none}
+@media(max-width:600px){.configuration-directory-tabs{gap:8px}.asset-configuration .configuration-directory-tabs>button{flex-direction:column;gap:7px;padding:12px 6px;font-size:11px}}
+
+.asset-configuration .directory-add>button[type=submit],.asset-configuration .directory-row>button[type=submit],.asset-configuration .overview-panel>header>button,.asset-configuration form>footer>button:last-child{background:#111;color:white;border-color:#111}
+.asset-configuration .directory-add>button[type=submit]:hover,.asset-configuration .directory-row>button[type=submit]:hover,.asset-configuration .overview-panel>header>button:hover{background:#282828}
+
+.asset-configuration textarea[aria-label="Asset type categories"]{min-height:150px;height:150px;padding:12px;line-height:1.6;resize:vertical;font-family:inherit;box-sizing:border-box}

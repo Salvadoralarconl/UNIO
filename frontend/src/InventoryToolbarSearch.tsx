@@ -1,0 +1,3 @@
+import {useEffect,useState} from 'react';
+import {createPortal} from 'react-dom';
+export default function InventoryToolbarSearch({value,onChange,label,placeholder}:{value:string;onChange:(value:string)=>void;label:string;placeholder:string}){const [target,setTarget]=useState<HTMLElement|null>(null);useEffect(()=>{setTarget(document.getElementById('inventory-toolbar-search'));},[]);const field=<label className="inventory-toolbar-search"><input type="search" aria-label={label} placeholder={placeholder} value={value} onChange={event=>onChange(event.target.value)}/></label>;return target?createPortal(field,target):field;}

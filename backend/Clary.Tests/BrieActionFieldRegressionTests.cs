@@ -1,0 +1,11 @@
+using Clary.Api;
+using Clary.Api.Directories;
+using Xunit;
+public class BrieActionFieldRegressionTests {
+ sealed class Handler(BrieTicketPatch patch):HttpMessageHandler {protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken ct)=>Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK){Content=new StringContent(System.Text.Json.JsonSerializer.Serialize(new{done=true,done_reason="stop",message=new{content=System.Text.Json.JsonSerializer.Serialize(patch)}}))});}
+ static async Task<BrieTicketPatch> Parse(BrieTicketPatch patch,string text,string operation){using var client=new HttpClient(new Handler(patch)){BaseAddress=new Uri("http://synthetic.invalid")};return await new OllamaBrieTicketParser(client,"fixture").ParseAsync(text,operation,default);}
+ sealed class Parser(BrieTicketPatch patch):IBrieTicketParser {public Task<BrieTicketPatch> ParseAsync(string text,CancellationToken ct)=>Task.FromResult(patch);}
+ [Fact]public async Task AssetNameDoesNotAuthorizeARecipient(){var p=await Parse(new(Name:"Spare USB printer",Employee:"Spare USB printer"),"Please register the spare printer as an asset. Name Spare USB printer.","asset");Assert.Null(p.Employee);}
+ [Fact]public async Task ExplicitRecipientIsPreservedEvenIfSameAsName(){var p=await Parse(new(Name:"Shared",Employee:"Shared"),"Create asset name Shared assigned to Shared","asset");Assert.Equal("Shared",p.Employee);}
+ [Fact]public async Task KindQualifiedExactTagStillDisambiguatesEmployee()=>await KnowledgeIsolationFixture.Run(async f=>{var dirs=new DirectoryRepository(f.Db);var a=await dirs.SaveEmployeeAsync(f.A,null,new("Jo Kim"),default);var b=await dirs.SaveEmployeeAsync(f.A,null,new("Jo Kim"),default);var assets=new InventoryRepository(f.Db);var asset=await assets.CreateAsync(f.A,new("MAP-D17","Reception",Status:"Available"),default);var service=new BrieTickets(f.Db,new TicketRepository(f.Db),new Parser(new(Target:"dock MAP-D17",Employee:"Jo Kim")));var result=await service.ReplyAsync(f.A,new("Assign dock MAP-D17 to Jo Kim, please.",Guid.NewGuid()),default,"assign");Assert.Equal("clarify",result.Status);Assert.Equal(2,result.Choices!.Count);Assert.Contains(result.Choices,x=>x.Id==a.Id);Assert.Contains(result.Choices,x=>x.Id==b.Id);Assert.Null((await assets.GetAsync(f.A,asset.Id,default))!.EmployeeId);});
+}

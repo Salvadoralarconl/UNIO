@@ -1,0 +1,10 @@
+using Clary.Api;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Json;
+using Xunit;
+public class BrieAiDispatchTests {
+ sealed class Router(string intent,string? evidence):IBrieIntentRouter {public int Calls;public Task<BrieIntentDecision> InterpretAsync(BrieIntentContext c,CancellationToken ct){Calls++;return Task.FromResult(new BrieIntentDecision(intent,evidence));}}
+ sealed class Parser:IBrieTicketParser {public Task<BrieTicketPatch> ParseAsync(string text,CancellationToken ct)=>Task.FromResult(new BrieTicketPatch());}
+ [Fact] public async Task ModelIntentRoutesBeyondPhraseGateAndReceiptSkipsReinterpretation(){var router=new Router("create_ticket","put this on the IT support queue");await IdentityFixture.Run(async f=>{await f.Login();var request=new BrieMessage("Would it be possible to put this on the IT support queue?",Guid.NewGuid());var r=await f.Send(HttpMethod.Post,"/api/brie/messages",request);var a=await r.Content.ReadFromJsonAsync<Answer>();Assert.Equal("clarify",a!.TicketTask?.Status);Assert.Equal(1,router.Calls);var replay=await f.Send(HttpMethod.Post,"/api/brie/messages",request);Assert.Equal(a.TicketTask!.TaskId,(await replay.Content.ReadFromJsonAsync<Answer>())!.TicketTask!.TaskId);Assert.Equal(1,router.Calls);Assert.Equal(1L,await f.Scalar("SELECT count(*) FROM brie_ticket_tasks"));},b=>{b.Services.AddSingleton<IBrieIntentRouter>(router);b.Services.AddSingleton<IBrieTicketParser>(new Parser());b.Services.AddSingleton<BrieTickets>();});}
+ [Fact] public async Task ModelAdviceProposalDoesNotInvokeActionEvenWhenVerbIsPresent(){var router=new Router("advice",null);await IdentityFixture.Run(async f=>{await f.Login();var r=await f.Send(HttpMethod.Post,"/api/brie/messages",new BrieMessage("Create ticket is the button label. What does it mean?",Guid.NewGuid()));var a=await r.Content.ReadFromJsonAsync<Answer>();Assert.Null(a!.TicketTask);Assert.Equal(0L,await f.Scalar("SELECT count(*) FROM brie_ticket_tasks"));Assert.Equal(1,router.Calls);},b=>{b.Services.AddSingleton<IBrieIntentRouter>(router);b.Services.AddSingleton<IBrieTicketParser>(new Parser());b.Services.AddSingleton<BrieTickets>();});}
+}

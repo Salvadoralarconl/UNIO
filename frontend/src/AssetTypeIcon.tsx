@@ -1,0 +1,3 @@
+import {Box,Package,Laptop,Monitor,Printer,Server,Router,Wifi,Headphones,Keyboard,Mouse,Smartphone,Tablet,Camera,Video,Mic,Speaker,Cable,HardDrive,Cpu,Wrench,Hammer,Drill,Car,Truck,Bike,Armchair,Sofa,Lightbulb,Briefcase} from 'lucide-react';
+export const assetIcons={Box,Package,Laptop,Monitor,Printer,Server,Router,Wifi,Headphones,Keyboard,Mouse,Smartphone,Tablet,Camera,Video,Mic,Speaker,Cable,HardDrive,Cpu,Wrench,Hammer,Drill,Car,Truck,Bike,Armchair,Sofa,Lightbulb,Briefcase};
+export default function AssetTypeIcon({name,size=20}:{name:string;size?:number}){const Icon=assetIcons[name as keyof typeof assetIcons]??Box;return <Icon size={size}/>;}

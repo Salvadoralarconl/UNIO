@@ -1,0 +1,41 @@
+/* Shared focus treatment across all application screens. */
+:root {
+  --focus-ring-color: #8f78b7;
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 3px;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+[contenteditable="true"]:focus,
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color) !important;
+  outline-offset: var(--focus-ring-offset) !important;
+  box-shadow: none !important;
+}
+
+/* Compound controls get one ring around the complete control. */
+.asset-category-control:focus-within,
+.composer:focus-within {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color) !important;
+  outline-offset: var(--focus-ring-offset) !important;
+  box-shadow: none !important;
+}
+.asset-category-control > input:focus,
+.asset-category-control > button:focus-visible,
+.composer input:focus,
+.composer button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Match the rounded input and toggle inside every shared dropdown. */
+.asset-category-control { border-radius: 10px; }
+
+/* Validation stays visible even while the invalid control has focus. */
+input:user-invalid,textarea:user-invalid,select:user-invalid,[aria-invalid="true"],
+.asset-category-control:has(input:user-invalid),.asset-category-control:has([aria-invalid="true"]){outline:3px solid #c43b3b !important;outline-offset:3px !important;box-shadow:none !important}
+.asset-category-control:has(input:user-invalid)>input,.asset-category-control:has([aria-invalid="true"])>input{outline:none !important}

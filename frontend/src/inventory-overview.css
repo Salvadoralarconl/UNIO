@@ -1,0 +1,95 @@
+.inventory-overview{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;padding:28px 30px 0;color:#30302c;gap:16px}.overview-heading h1{font-size:26px;line-height:1.2;font-weight:650;letter-spacing:-.5px;margin:0 0 6px}.overview-heading p{font-size:13px;color:#8b8b94;margin:0}.overview-summaries{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.overview-summaries>button{display:flex;align-items:flex-start;gap:14px;padding:18px;border:1px solid #e5e4df;border-radius:11px;background:#fff;text-align:left;color:#111;cursor:pointer}.overview-summaries>button:hover{background:#faf9f6}.overview-summaries>button>svg{flex-shrink:0}.overview-summaries>button>span>span{display:block;font-size:12px;color:#55554e}.overview-summaries strong{display:block;font-size:28px;font-weight:650;margin-top:6px;line-height:1.1}.overview-charts{display:grid;grid-template-columns:1.15fr 1fr;gap:12px}.overview-panel{border:1px solid #e5e4df;border-radius:11px;background:white;padding:16px;min-width:0}.overview-panel h2{font-size:14px;font-weight:600;margin:0 0 16px}.department-bars{display:flex;flex-direction:column;gap:8px;max-height:220px;overflow:auto}.department-bars button{display:grid;grid-template-columns:minmax(90px,1fr) minmax(60px,2.5fr) 24px;align-items:center;gap:12px;border:0;background:transparent;text-align:left;padding:5px 0;cursor:pointer;font-size:12px;color:inherit}.department-bars button:hover .department-name{text-decoration:underline}.department-name{white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.department-track{height:12px;background:#f0f0ed;border-radius:3px;overflow:hidden}.department-track>span{height:100%;display:block;border-radius:3px}.overview-status{display:flex;align-items:center;justify-content:space-around;gap:22px}.overview-donut{width:158px;height:158px;border-radius:50%;padding:28px;box-sizing:border-box;flex-shrink:0}.overview-donut>div{height:100%;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.overview-donut strong{font-size:23px;font-weight:650}.overview-donut span{font-size:11px;color:#77776e}.overview-legend{display:flex;flex-direction:column;gap:7px;flex:1;max-width:210px}.overview-legend button{display:flex;align-items:center;gap:10px;font-size:12px;background:transparent;border:0;padding:5px 0;text-align:left;color:inherit;cursor:pointer}.overview-legend button:hover span{text-decoration:underline}.overview-legend i{width:10px;height:10px;border-radius:50%;flex-shrink:0}.overview-legend span{flex:1}.overview-legend strong{font-weight:600}.overview-attention-scroll{overflow:auto;max-height:220px;border:1px solid #e8e7e2;border-radius:8px}.overview-attention table{border-collapse:collapse;width:100%;font-size:12px;text-align:left;table-layout:fixed}.overview-attention th,.overview-attention td{padding:9px 12px;border-bottom:1px solid #eeede7;overflow-wrap:anywhere}.overview-attention th{background:#f7f6f2;color:#74746d;font-weight:500;font-size:11px}.overview-attention td button{font:inherit;border:0;background:transparent;text-align:left;padding:0;color:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer;overflow-wrap:anywhere}.overview-monitoring-note{font-size:10px;color:#8c8c86;margin:10px 0 0;line-height:1.6}.overview-empty{font-size:12px;color:#92928b}.overview-activity{margin-top:auto;padding-top:10px;border-top:1px solid #e8e7e2;flex-shrink:0}.overview-activity h2{font-size:11px;margin:0 0 5px;font-weight:500}.overview-activity>div{display:flex;align-items:center;gap:6px;color:#92928b;font-size:10px}.overview-activity p{margin:0}.overview-error{font-size:12px;color:#a65c4c}.overview-error button{padding:7px 12px;border:1px solid #e5e4df;border-radius:7px;background:white;cursor:pointer}.inventory-overview button:focus-visible{outline:2px solid #9784b8;outline-offset:2px}@media(max-width:1100px){.overview-status{gap:12px}.overview-donut{width:130px;height:130px;padding:23px}}@media(max-width:800px){.overview-charts{grid-template-columns:1fr}.overview-summaries{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.inventory-overview{padding:20px 16px 0}.overview-heading h1{font-size:23px}.overview-summaries>button{padding:13px;gap:10px}.overview-summaries strong{font-size:24px}.overview-panel{padding:13px}.department-bars button{gap:8px}.overview-status{justify-content:flex-start}}
+
+.overview-attention td{vertical-align:middle}
+
+.department-settings>p{font-size:12px;color:#8b8b84}.department-add{display:flex;gap:12px;align-items:end;padding:12px 0 18px;flex-wrap:wrap}.department-add label{display:flex;flex-direction:column;gap:6px;font-size:12px}.department-add input:not([type=color]){border:1px solid #ddd;border-radius:6px;padding:8px;height:36px;box-sizing:border-box;font:inherit}.department-settings input[type=color]{width:40px;height:36px;padding:3px;border:1px solid #e5e4df;border-radius:6px;background:white;cursor:pointer}.department-settings button{border:1px solid #e5e4df;border-radius:7px;background:white;padding:8px 12px;font-size:12px;cursor:pointer}.department-settings button:disabled{opacity:.45;cursor:default}.department-add>button[type=submit]{background:#080808;color:white;height:36px}.department-settings-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #eee;font-size:13px}.department-settings-row>span{flex:1;overflow-wrap:anywhere}.department-settings-list{max-width:650px}
+/* Directory forms share the asset editor's aligned controls and white dropdowns. */
+.directory-add,.directory-row{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:16px 0}.directory-add>label,.directory-row>label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#52525b}.directory-add input,.directory-row input,.department-settings>label>input{height:36px;box-sizing:border-box;border:1px solid #dedee4;border-radius:8px;padding:0 10px;background:#fff;color:#18181b}.directory-add button,.directory-row button{height:36px}.directory-active{align-self:center;flex-direction:row!important;align-items:center}.directory-active input{height:16px!important}.directory-add .asset-category-field,.directory-row .asset-category-field{min-width:180px}.asset-category-options button small{display:block;color:#71717a;font-size:11px;margin-top:3px}.computer-form-grid>.asset-category-field,.computer-form-grid>div{min-width:0}.computer-form-grid input,.asset-category-control{height:36px;box-sizing:border-box}.department-settings{margin-bottom:20px}.directory-add input:focus,.directory-row input:focus{outline:2px solid #d4d4d8;outline-offset:1px}@media(max-width:600px){.directory-add>label,.directory-row>label,.directory-add>div,.directory-row>div{width:100%}.directory-add input,.directory-row input{width:100%}.directory-active{width:auto!important}}
+/* Needs attention fills the space previously left below the panels. */
+.inventory-overview{padding-bottom:20px}
+.inventory-overview>.overview-heading,.inventory-overview>.overview-summaries,.inventory-overview>.overview-charts{flex-shrink:0}
+.overview-attention{flex:1;min-height:140px;display:flex;flex-direction:column}
+.overview-attention-scroll{max-height:none;flex:1;min-height:0}
+.overview-attention>.overview-monitoring-note{margin-top:auto;padding-top:10px}
+/* Chart panels keep the compact status-card height as department data grows. */
+.overview-charts>.overview-panel{height:224px;box-sizing:border-box;display:flex;flex-direction:column;min-height:0}
+.overview-charts>.overview-panel>h2{flex-shrink:0}
+.overview-charts .department-bars{flex:1;min-height:0;max-height:none;overflow:auto}
+.overview-charts .department-bars>button{flex-shrink:0}
+.overview-charts .overview-status{flex:1;min-height:0;overflow:auto}
+@media(max-width:1100px){.overview-charts>.overview-panel{height:190px}}
+
+/* Needs attention follows the Inventory table format without filter controls. */
+.overview-attention{padding:0;border:0;border-radius:0;background:transparent}
+.overview-attention>h2{margin:0 0 6px;flex-shrink:0}
+.overview-attention-scroll{border-radius:10px;background:#fff}
+.overview-attention table{font-size:12px}
+.overview-attention th,.overview-attention td{padding:16px;border-bottom:1px solid #eeede7}
+.overview-attention th{position:sticky;top:0;z-index:1;background:#f7f6f2;font-size:11px;font-weight:500;color:#85877f}
+.overview-attention tbody tr:hover{background:#f9f8f5}
+.overview-attention td:first-child{width:18%}
+/* Keep the Needs attention title inside the enclosing panel. */
+.overview-attention{padding:0;border:1px solid #e5e4df;border-radius:10px;background:#fff;overflow:hidden}
+.overview-attention>h2{padding:16px;margin:0;flex-shrink:0}
+.overview-attention-scroll{border:0;border-top:1px solid #eeede7;border-radius:0}
+.overview-attention>.overview-empty{margin:0;padding:16px}
+/* The title and column labels stay outside the row scrolling region. */
+.overview-attention-scroll{overflow:hidden;display:flex;flex-direction:column}
+.overview-attention table{display:flex;flex-direction:column;flex:1;min-height:0}
+.overview-attention thead{display:block;flex-shrink:0;background:#f7f6f2}
+.overview-attention tbody{display:block;flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
+.overview-attention tr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.overview-attention th{position:static;text-align:left}
+.overview-attention td:first-child{width:auto}
+/* Allow the complete fixed-size status chart to fit without a scrollbar. */
+.overview-charts>.overview-panel{height:226px}
+.overview-charts .overview-status{overflow:visible}
+@media(max-width:1100px){.overview-charts>.overview-panel{height:192px}}
+
+/* Department settings use one compact line per entry. */
+.department-settings .directory-department-line{display:grid;grid-template-columns:minmax(180px,1fr) 48px auto auto;align-items:end;gap:12px;margin:0;padding:12px 0;max-width:none}
+.department-settings .directory-department-line>label{margin:0;min-width:0}
+.department-settings .directory-department-line>label:first-child input{width:100%}
+.department-settings .directory-department-line>label:has(input[type=checkbox]){display:flex;flex-direction:row;align-items:center;gap:7px;height:36px;white-space:nowrap}
+.department-settings .directory-department-line input[type=checkbox]{width:15px;height:15px;margin:0;padding:0}
+.department-settings .directory-department-line>button{width:auto;height:36px;margin:0;white-space:nowrap}
+@media(max-width:600px){.department-settings .directory-department-line{grid-template-columns:minmax(0,1fr) 44px auto;gap:8px}.department-settings .directory-department-line>label:first-child{grid-column:1/-1}.department-settings .directory-department-line>button{justify-self:end}}
+
+/* Employee directory follows the same compact editable row layout. */
+.department-settings .directory-employee-line{display:grid;grid-template-columns:minmax(130px,1fr) minmax(160px,1.2fr) minmax(150px,1fr) auto auto;align-items:end;gap:12px;margin:0;padding:12px 0;max-width:none}
+.department-settings .directory-employee-line>label,.department-settings .directory-employee-line>.asset-category-field{margin:0;min-width:0}
+.department-settings .directory-employee-line input:not([type=checkbox]){width:100%}
+.department-settings .directory-employee-line>label:has(input[type=checkbox]){display:flex;flex-direction:row;align-items:center;gap:7px;height:36px;white-space:nowrap}
+.department-settings .directory-employee-line input[type=checkbox]{width:15px;height:15px;margin:0;padding:0}
+.department-settings .directory-employee-line>button{width:auto;height:36px;margin:0;white-space:nowrap}
+@media(max-width:850px){.department-settings .directory-employee-line{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.department-settings .directory-employee-line>.asset-category-field{grid-column:1/-1}.department-settings .directory-employee-line>button{justify-self:end}}
+@media(max-width:500px){.department-settings .directory-employee-line>label:not(:has(input[type=checkbox])){grid-column:1/-1}}
+
+/* Fill the panel and align nested directory dropdowns with adjacent inputs. */
+.department-settings .department-settings-list{width:100%;max-width:none}
+.department-settings .directory-employee-line,.department-settings .directory-department-line{width:100%;box-sizing:border-box}
+.department-settings .directory-employee-line>div{min-width:0}
+.department-settings .directory-employee-line>div>.asset-category-field{min-width:0;margin:0}
+.department-settings .directory-employee-line .asset-category-field>label{font-size:12px;line-height:normal;margin:0 0 6px;color:#52525b}
+.department-settings .directory-employee-line .asset-category-control{margin:0}
+.department-settings .directory-employee-line .directory-active,.department-settings .directory-department-line .directory-active{align-self:end}
+.department-settings .directory-employee-line input[type=checkbox],.department-settings .directory-department-line input[type=checkbox]{appearance:auto;flex:none;width:15px!important;height:15px!important}
+.department-settings .directory-employee-line:not(:has(.directory-active)){grid-template-columns:minmax(130px,1fr) minmax(160px,1.2fr) minmax(150px,1fr) auto}
+@media(max-width:850px){.department-settings .directory-employee-line:not(:has(.directory-active)){grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.department-settings .directory-employee-line>div{grid-column:1/-1}}
+
+.department-settings .directory-location-line{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;align-items:end;gap:12px;margin:0;padding:12px 0;width:100%;box-sizing:border-box;max-width:none}
+.department-settings .directory-location-line:not(:has(.directory-active)){grid-template-columns:minmax(180px,1fr) auto}
+.department-settings .directory-location-line>label{margin:0;min-width:0}
+.department-settings .directory-location-line>label:first-child input{width:100%}
+.department-settings .directory-location-line .directory-active{display:flex;flex-direction:row;align-items:center;align-self:end;gap:7px;height:36px;white-space:nowrap}
+.department-settings .directory-location-line input[type=checkbox]{appearance:auto;flex:none;width:15px!important;height:15px!important;margin:0;padding:0}
+.department-settings .directory-location-line>button{width:auto;height:36px;margin:0;white-space:nowrap}
+@media(max-width:500px){.department-settings .directory-location-line,.department-settings .directory-location-line:not(:has(.directory-active)){grid-template-columns:minmax(0,1fr) auto;gap:8px}.department-settings .directory-location-line>label:first-child{grid-column:1/-1}.department-settings .directory-location-line>button{justify-self:end}}
+.department-settings .directory-row .directory-active input[type=checkbox]{appearance:none;-webkit-appearance:none;width:16px!important;height:16px!important;box-sizing:border-box;flex:none;margin:0;padding:0;border:1px solid #bdbfb7;border-radius:4px;background:#fff;cursor:pointer}
+.department-settings .directory-row .directory-active input[type=checkbox]:checked{background-color:#4f75ff;border-color:#4f75ff;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m4 8 3 3 5-6' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E");background-size:100%;background-repeat:no-repeat}
+.department-settings .directory-row .directory-active input[type=checkbox]:disabled{opacity:.5;cursor:default}
+
+.department-settings .directory-create-section{background:#fff;border:1px solid transparent;border-radius:16px;padding:16px 18px;margin:18px 0 24px;box-shadow:0 8px 28px rgba(28,30,26,.07)}
+.department-settings .directory-create-section h3,.department-settings .directory-existing-heading{font-size:13px;font-weight:600;color:#282a26;line-height:1.4;margin:0 0 10px}
+.department-settings .directory-create-section .directory-add{margin:0;padding:0}
+.department-settings .directory-existing-heading{margin:0 0 12px}
