@@ -1,4 +1,6 @@
-# Clary by UNIO — SourceDesk
+# Clary by UNIO - SourceDesk
+
+**Ubuntu hosting:** see [the HTTPS deployment walkthrough](docs/ubuntu-hosting.md). Use `compose.production.yaml` for the separate hosted stack; the original `compose.yaml` remains the local development setup. Demo files alone do not migrate the existing database or accounts.
 
 **Current Brie operation and verification (2026-10-11):** see the [Brie local runbook](docs/brie-runbook.md) for supported Inventory/Tickets actions, authenticated company boundaries, startup/test commands, deployed release and limitations. Provider/evaluation notes below include earlier checkpoints; the runbook is the current operational reference.
 

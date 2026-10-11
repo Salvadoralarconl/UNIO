@@ -38,6 +38,7 @@ if(args.Contains("--initialize-operator"))
     Console.WriteLine("Operator binding initialized.");
     return;
 }
+builder.AddPersistentKeys();
 if(!args.Contains("--migrate"))builder.AddCompanyIdentity();
 if(builder.Environment.IsDevelopment())
 {
@@ -129,6 +130,7 @@ if(!args.Contains("--migrate"))
     app.MapAccountEndpoints();
 }
 app.MapGet("/api/health", (RuntimeConfiguration config) => config.Health());
+app.MapHostedReadiness();
 app.MapCompanyContentEndpoints();
 
 app.Run();

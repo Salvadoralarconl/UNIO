@@ -8,7 +8,7 @@ public sealed class LocalOperatorBootstrap(NpgsqlDataSource database,string fron
  public async Task<Guid> InitializeAsync(string outputFile,CancellationToken ct=default)
  {
   var path=PrivatePath(outputFile);
-  if(!Uri.TryCreate(frontendOrigin,UriKind.Absolute,out var origin)||origin.Host!="localhost"||origin.Port!=5174||origin.Scheme is not ("http" or "https")||origin.UserInfo.Length!=0||origin.AbsolutePath!="/"||origin.Query.Length!=0||origin.Fragment.Length!=0)throw new ArgumentException("Configure a localhost frontend origin on port 5174.");
+  var origin=FrontendOrigin(frontendOrigin);
   await using var c=await database.OpenConnectionAsync(ct);await using var tx=await c.BeginTransactionAsync(ct);
   await using(var gate=new NpgsqlCommand("LOCK TABLE operator_owner IN SHARE ROW EXCLUSIVE MODE",c,tx))await gate.ExecuteNonQueryAsync(ct);
   await using(var existing=new NpgsqlCommand("SELECT 1 FROM operator_owner",c,tx))if(await existing.ExecuteScalarAsync(ct) is not null)throw new InvalidOperationException("Operator ownership is already bound. Explicit offline recovery is required.");
@@ -34,7 +34,7 @@ public sealed class LocalOperatorBootstrap(NpgsqlDataSource database,string fron
  public async Task<Guid> RecoverAsync(string outputFile,CancellationToken ct=default)
  {
   var path=PrivatePath(outputFile);
-  if(!Uri.TryCreate(frontendOrigin,UriKind.Absolute,out var origin)||origin.Host!="localhost"||origin.Port!=5174||origin.Scheme is not ("http" or "https")||origin.UserInfo.Length!=0||origin.AbsolutePath!="/"||origin.Query.Length!=0||origin.Fragment.Length!=0)throw new ArgumentException("Configure a localhost frontend origin on port 5174.");
+  var origin=FrontendOrigin(frontendOrigin);
   await using var c=await database.OpenConnectionAsync(ct);await using var tx=await c.BeginTransactionAsync(ct);
   await using(var gate=new NpgsqlCommand("LOCK TABLE operator_owner IN SHARE ROW EXCLUSIVE MODE",c,tx))await gate.ExecuteNonQueryAsync(ct);
   Guid id;bool configured;
@@ -52,6 +52,15 @@ public sealed class LocalOperatorBootstrap(NpgsqlDataSource database,string fron
    using(var stream=CreatePrivateFile(path)){created=true;await using var writer=new StreamWriter(stream);await writer.WriteAsync((origin.GetLeftPart(UriPartial.Authority)+link.Link+Environment.NewLine).AsMemory(),ct);await writer.FlushAsync(ct);}
    await tx.CommitAsync(ct);return id;
   }catch{if(created)File.Delete(path);throw;}
+ }
+ // Offline administrator configuration is the only source of link authority.
+ // Never infer it from request Host, forwarded headers or a return URL.
+ private static Uri FrontendOrigin(string value)
+ {
+  if(!Uri.TryCreate(value,UriKind.Absolute,out var origin)||origin.UserInfo.Length!=0||origin.AbsolutePath!="/"||origin.Query.Length!=0||origin.Fragment.Length!=0||
+     !(origin.Scheme=="https"||(origin.Scheme=="http"&&origin.Host=="localhost"&&origin.Port==5174)))
+   throw new ArgumentException("Configure an explicit HTTPS frontend origin, or development http://localhost:5174, without credentials, paths, query or fragment.");
+  return origin;
  }
  private static string PrivatePath(string outputFile)
  {

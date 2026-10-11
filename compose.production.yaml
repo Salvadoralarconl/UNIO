@@ -1,0 +1,87 @@
+name: unio
+services:
+  database:
+    image: pgvector/pgvector:pg17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: unio
+      POSTGRES_USER: unio
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Generate private configuration first}
+    volumes: [database:/var/lib/postgresql/data]
+    networks: [private]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U unio -d unio']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    logging: &logging
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+  api:
+    image: unio-api:${UNIO_RELEASE:-local}
+    build: {context: ., dockerfile: deploy/Dockerfile.api}
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: https://+:8443
+      Kestrel__Certificates__Default__Path: /run/tls/origin.crt
+      Kestrel__Certificates__Default__KeyPath: /run/tls/origin.key
+      AllowedHosts: unio.getunio.dev;api
+      Hosting__DataProtectionPath: /app/keys
+      Hosting__ReadinessEnabled: 'true'
+      Identity__Mode: Local
+      Identity__Development__Enabled: 'false'
+      Identity__FrontendOrigin: https://unio.getunio.dev
+      ConnectionStrings__Knowledge: Host=database;Database=unio;Username=unio;Password=${POSTGRES_PASSWORD:?Generate private configuration first}
+      AI_PROVIDER: Ollama
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:?Set a private Ollama origin reachable from Docker}
+      OLLAMA_GENERATION_MODEL: qwen3:8b
+      OLLAMA_EMBEDDING_MODEL: embeddinggemma
+      OLLAMA_EMBEDDING_DIMENSIONS: '768'
+      XDG_DATA_HOME: /app/private
+    volumes:
+      - uploads:/app/uploads
+      - keys:/app/keys
+      - bootstrap:/app/private
+      - tls:/run/tls:ro
+    networks: [private, outbound]
+    depends_on:
+      database: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --max-time, '5', --cacert, /run/tls/origin.crt, --resolve, 'api:8443:127.0.0.1', https://api:8443/internal/ready]
+      interval: 20s
+      timeout: 6s
+      retries: 5
+      start_period: 30s
+    logging: *logging
+  web:
+    image: unio-web:${UNIO_RELEASE:-local}
+    build: {context: ., dockerfile: deploy/Dockerfile.web}
+    restart: unless-stopped
+    ports: ['127.0.0.1:${UNIO_HTTP_PORT:-5180}:8080']
+    volumes: [tls:/run/tls:ro]
+    networks: [private, outbound]
+    depends_on:
+      api: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, '--header=Host: unio.getunio.dev', http://127.0.0.1:8080/healthz]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+    logging: *logging
+  tls-init:
+    profiles: [tools]
+    image: unio-api:${UNIO_RELEASE:-local}
+    user: '0:0'
+    entrypoint: [/usr/local/bin/init-unio-tls]
+    network_mode: none
+    volumes: [tls:/tls]
+networks:
+  private: {internal: true}
+  outbound:
+volumes:
+  database:
+  uploads:
+  keys:
+  bootstrap:
+  tls:

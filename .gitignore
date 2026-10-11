@@ -24,3 +24,5 @@ backend/*-build/
 
 **/TestResults/
 *.trx
+.private/
+**/backups/
